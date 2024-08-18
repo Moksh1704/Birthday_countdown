@@ -1,0 +1,141 @@
+******************************************HTML CODE*******************************************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wishes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-sm">
+        <h1>Countdown</h1>
+        <label for="name">Enter Name:</label>
+        <input id="name" type="text" placeholder="Enter friend's name">
+        <button id="enter-btn" class="btn">Enter</button>
+        <div id="message"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+************************************CSS CODE*************************************************
+body {
+    background-image: url('bg_image');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.container-sm {
+    text-align: center;
+    background-color: rgba(105, 101, 101, 0.8); /* Slightly transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px; /* Adjusted max-width for better appearance */
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #ffffff;
+}
+
+label {
+    color: #fff9f9;
+    font-size: x-large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px); /* Adjust for padding and border */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#message {
+    font-size: 24px; /* Adjust font size for readability */
+    color: #000000; /* Attractive color for the text */
+  
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 10px; /* Rounded corners */
+  
+    margin-top: 20px; /* Space above the message */
+    text-align: center; /* Center align the text */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; /* Consistent font */
+}
+
+
+*****************************************************SCRIPT CODE***************************************************
+const friends = {
+    "moksha": new Date('2024-08-17'),
+    "gyaneswari": new Date('2024-06-14'),
+    "vasini": new Date('2024-08-07'),
+    "prathi": new Date('2024-12-05'),
+    "rahul": new Date('2024-03-25'),
+    "balaji": new Date('2024-08-07'),
+    "jaswanth": new Date('2024-12-05'),
+    "ashish": new Date('2024-01-12'),
+    "thagur": new Date('2024-12-16'),
+    "sreeja": new Date('2025-01-24'),
+    "haritha": new Date('2024-01-24'),
+    "somanadh": new Date('2024-12-31'),
+
+};
+
+document.getElementById('enter-btn').addEventListener('click', function() {
+    const nameInput = document.getElementById('name');
+    const name = nameInput.value.trim().toLowerCase();
+    const messageDiv = document.getElementById('message');
+    messageDiv.style.fontSize = "24px"; // Make the message text bigger
+    messageDiv.style.color = "#000000"; // Make the message text color more attractive
+
+    if (name in friends) {
+        const today = new Date();
+        const birthday = new Date(friends[name]);
+        birthday.setFullYear(today.getFullYear());
+
+        // If the birthday has already passed this year, set it for the next year
+        if (today > birthday) {
+            birthday.setFullYear(today.getFullYear() + 1);
+        }
+
+        // Calculate the difference in time and then convert to days
+        const timeDiff = birthday.getTime() - today.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        // If the birthday was this year but has already passed
+        if (today > friends[name]) {
+            const daysAgo = Math.ceil((today.getTime() - friends[name].getTime()) / (1000 * 60 * 60 * 24));
+            messageDiv.innerHTML = `<strong>${capitalizeFirstLetter(name)}'s Birthday was ${daysAgo} day(s) ago!</strong>`;
+        } else if (daysLeft > 0) {
+            messageDiv.innerHTML = `<strong>${capitalizeFirstLetter(name)}'s Birthday is in ${daysLeft} day(s)!</strong>`;
+        } else if (daysLeft === 0) {
+            messageDiv.innerHTML = `<strong>Happy Birthday to ${capitalizeFirstLetter(name)}! 🎉🎂 Wishing you a wonderful day and an amazing year ahead! ❤️</strong>`;
+        }
+    } else {
+        messageDiv.innerHTML = `<strong>Sorry, we couldn't find ${capitalizeFirstLetter(name)} in our list. Please try another name!</strong>`;
+    }
+});
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
